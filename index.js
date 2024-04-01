@@ -3,8 +3,8 @@ const cors = require('cors');
 const app = express();
 const port = 443;
 const admin = require("firebase-admin");
-
-const serviceAccount = require("./fir-panel-9fbd7-firebase-adminsdk-i7100-d1cc64749f.json");
+require("dotenv").config();
+const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
