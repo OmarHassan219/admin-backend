@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = 443;
 const admin = require("firebase-admin");
 require("dotenv").config();
 const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
@@ -52,6 +51,7 @@ app.post("/remote-config", async (req, res) => {
     res.status(500).send("Error updating remote config");
   }
 });
+const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
