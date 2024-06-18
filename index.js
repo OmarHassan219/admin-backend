@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const admin = require("firebase-admin");
+const { updateSearchIndex } = require('./model/information');
 require("dotenv").config();
 const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
@@ -42,13 +43,16 @@ app.get("/remote-config", async (req, res) => {
 
 app.post("/remote-config", async (req, res) => {
   try {
-    const updates = req.body; // Assuming updates are sent in the request body
-    console.log(updates);
+    const updates = req.body; 
+    console.log(updates.version.versionNumber);
+    const updatesCopy = {...updates}
+    // updatesCopy.version.versionNumber++
     const config = admin.remoteConfig();
-    await config.publishTemplate(updates);
+    await config.publishTemplate(updatesCopy);
     res.status(200).send("Template has been published");
   } catch (err) {
     res.status(500).send("Error updating remote config");
+    console.log(err.message)
   }
 });
 const port = process.env.PORT || 8080;
